@@ -2,9 +2,9 @@ from api import RESTAPI
 from riotapiutilities import api
 from riotapiutilities import consts
 
-api_conn = RESTAPI('')
+api_conn = RESTAPI('Token a7cb48f9a0645e2eb18ea44795907fb7be41dc58')
 
-key = ''
+key = 'RGAPI-ef3247df-953a-4361-80f7-f3f2c255b5d0'
 na1_api = api.RiotApi(key, consts.REGIONS['north_america'])
 americas_api = api.RiotApi(key, consts.REGIONS['americas'])
 
@@ -72,3 +72,5 @@ americas_api = api.RiotApi(key, consts.REGIONS['americas'])
 # print(api_conn.post_matchParticipants(americas_api.get_match_by_match_id('NA1_4243491999')))
 # print(api_conn.post_league(na1_api.get_league_by_summoner_id('335Zf1OEWrsPVV-lWYz9j3iyD_5NOhwsf9Bu0onIIB8qRIo')))
 # print(api_conn.post_championMastery(na1_api.get_champ_mastery_by_summoner_id_and_champ_id('335Zf1OEWrsPVV-lWYz9j3iyD_5NOhwsf9Bu0onIIB8qRIo', '1')))
+
+# print(api_conn.post_all_match_data(americas_api.get_match_by_match_id('NA1_4243491999')))

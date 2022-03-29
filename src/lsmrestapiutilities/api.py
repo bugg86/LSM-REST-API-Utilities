@@ -1,4 +1,4 @@
-from .consts import URL
+from consts import URL
 
 import requests
 
@@ -471,3 +471,9 @@ class RESTAPI :
         
         api_url = URL['championmasteries'].format(url='/')
         return self.request_post(api_url, body)
+
+    def post_all_match_data(self, match) : 
+        self.post_match(match)
+        self.post_matchTeams(match)
+        self.post_matchParticipants(match)
+        return True
