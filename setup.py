@@ -13,7 +13,6 @@ setup(
     keywords='lsm rest api utilities',
     install_requires=[
           'requests',
-          'http',
           'riotapiutilities'
       ],
 
