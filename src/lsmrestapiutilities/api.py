@@ -1,5 +1,5 @@
 from http.client import responses
-from consts import URL
+from .consts import URL
 
 import requests
 
