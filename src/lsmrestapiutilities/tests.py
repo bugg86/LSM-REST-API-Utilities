@@ -1,6 +1,12 @@
 from api import RESTAPI
+from riotapiutilities import api
+from riotapiutilities import consts
 
-api_conn = RESTAPI('Token a7cb48f9a0645e2eb18ea44795907fb7be41dc58')
+api_conn = RESTAPI('')
+
+key = ''
+na1_api = api.RiotApi(key, consts.REGIONS['north_america'])
+americas_api = api.RiotApi(key, consts.REGIONS['americas'])
 
 # print(api_conn.get_summoner_by_name('FunnyBug'))
 # print(api_conn.get_summoner_by_account_id('CXEI5Ga72gLJwkLwja6_PFkc1moog-wiIhrCBjucF-d9AaM'))
@@ -57,3 +63,12 @@ api_conn = RESTAPI('Token a7cb48f9a0645e2eb18ea44795907fb7be41dc58')
 # print(api_conn.get_summonerspell_by_key('1'))
 # print(api_conn.get_summonerspell_by_id('SummonerExhaust'))
 # print(api_conn.get_summonerspell_by_name('Smite'))
+
+# print(na1_api.get_summoner_by_name('FunnyBug'))
+# print(api_conn.post_summoner(na1_api.get_summoner_by_name('FunnyBug')))
+
+# print (api_conn.post_match(americas_api.get_match_by_match_id('NA1_4243491999')))
+# print(api_conn.post_matchTeams(americas_api.get_match_by_match_id('NA1_4243491999')))
+# print(api_conn.post_matchParticipants(americas_api.get_match_by_match_id('NA1_4243491999')))
+# print(api_conn.post_league(na1_api.get_league_by_summoner_id('335Zf1OEWrsPVV-lWYz9j3iyD_5NOhwsf9Bu0onIIB8qRIo')))
+# print(api_conn.post_championMastery(na1_api.get_champ_mastery_by_summoner_id_and_champ_id('335Zf1OEWrsPVV-lWYz9j3iyD_5NOhwsf9Bu0onIIB8qRIo', '1')))
