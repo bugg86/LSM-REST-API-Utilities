@@ -1,4 +1,4 @@
-from consts import URL
+from .consts import URL
 
 import requests
 
