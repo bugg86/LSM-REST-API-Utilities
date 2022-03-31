@@ -1,4 +1,6 @@
 from .consts import URL
+from riotapiutilities.api import RiotApi
+from riotapiutilities.consts import REGIONS
 
 import requests
 
@@ -294,7 +296,7 @@ class RESTAPI :
         for team in match['info']['teams'] :
             teamid = team['teamId']
             response = self.get_matchteam_by_matchid_and_teamid(matchid, teamid)
-            if match['gameMode'] == 'ARAM' :
+            if match['info']['gameMode'] == 'ARAM' :
                 ban1, ban2, ban3, ban4, ban5 = -1, -1, -1, -1, -1
             else :
                 ban1 = team['bans'][0]['championId']
@@ -343,7 +345,13 @@ class RESTAPI :
             for style in participant['perks']['styles'] :
                 for selection in style['selections'] :
                     runes.append(selection['perk'])
-            
+            puuid = participant['puuid']
+            summonerid = participant['summonerId']
+            response = self.get_summoner_by_puuid(puuid)
+            if len(response) == 0 :
+                RIOT_KEY = 'RGAPI-ef3247df-953a-4361-80f7-f3f2c255b5d0'
+                summoner = RiotApi(RIOT_KEY, REGIONS['north_america']).get_summoner_by_puuid(puuid)
+                self.post_summoner(summoner)
             body = {
                 "matchid" : "{matchId}".format(matchId=match['metadata']['matchId']),
                 "summonerid" : "{summonerId}".format(summonerId=participant['summonerId']),
@@ -457,7 +465,8 @@ class RESTAPI :
                 "wardsplaced" : int(participant['wardsPlaced']),
                 "win" : participant['win']
             }
-            response = self.get_matchparticipant_by_matchid_and_puuid(match['metadata']['matchId'], participant['puuid'])
+        
+            response = self.get_matchparticipant_by_matchid_and_summonerid(match['metadata']['matchId'], summonerid)
             if (len(response) == 0) :
                 api_url=URL['matchparticipants'].format(url='/')
                 self.request_post(api_url, body)

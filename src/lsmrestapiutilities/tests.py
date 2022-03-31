@@ -67,7 +67,7 @@ americas_api = api.RiotApi(key, consts.REGIONS['americas'])
 # print(na1_api.get_summoner_by_name('FunnyBug'))
 # print(api_conn.post_summoner(na1_api.get_summoner_by_name('FunnyBug')))
 
-# print (api_conn.post_match(americas_api.get_match_by_match_id('NA1_4243491999')))
+# print (api_conn.post_all_match_data(americas_api.get_match_by_match_id('NA1_4243491999')))
 # print(api_conn.post_matchTeams(americas_api.get_match_by_match_id('NA1_4243491999')))
 # print(api_conn.post_matchParticipants(americas_api.get_match_by_match_id('NA1_4243491999')))
 # print(api_conn.post_league(na1_api.get_league_by_summoner_id('335Zf1OEWrsPVV-lWYz9j3iyD_5NOhwsf9Bu0onIIB8qRIo')))
