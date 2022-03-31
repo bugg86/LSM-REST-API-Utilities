@@ -35,6 +35,21 @@ class RESTAPI :
         
         return response.json()
 
+    def request_update(self, api_url, body, params={}) :
+        args = {'Authorization' : self.api_key}
+        for key, value in params.items() :
+            if key not in args :
+                args[key] = value
+        response = requests.update(
+            URL['base'].format(
+                url=api_url
+            ),
+            data=body,
+            headers=args
+        )
+
+        return response.json()
+
     def custom_filtered_request_get(self, endpoint, filter) :
         api_url = URL[endpoint].format(url=filter)
         return self.request_get(api_url)
@@ -274,11 +289,14 @@ class RESTAPI :
         api_url = URL['matches'].format(url='/')
         return self.request_post(api_url, body)
 
-    def post_matchTeams(self, match) : 
+    def post_matchTeams(self, match) :
+        matchid = match['metadata']['matchId']
         for team in match['info']['teams'] :
+            teamid = team['teamId']
+            response = self.get_matchteam_by_matchid_and_teamid(matchid, teamid)
             body = {
-                'matchid' : match['metadata']['matchId'],
-                'teamid' : team['teamId'],
+                'matchid' : matchid,
+                'teamid' : teamid,
                 'win' : team['win'],
                 'ban1' : team['bans'][0]['championId'],
                 'ban2' : team['bans'][1]['championId'],
@@ -298,8 +316,13 @@ class RESTAPI :
                 'firsttower' : team['objectives']['tower']['first'],
                 'towerkills' : team['objectives']['tower']['kills']
             }
-            api_url = URL['matchteams'].format(url='/')
-            self.request_post(api_url, body)
+            if (len(response) == 0) :
+                api_url = URL['matchteams'].format(url='/')
+                self.request_post(api_url, body)
+            else :
+                api_url = URL['matchteams'].format(url='/{id}'.format(id=response[0]['id']))
+                self.request_update(api_url, body)
+
         return True
 
     def post_matchParticipants(self, match) :
@@ -426,9 +449,13 @@ class RESTAPI :
                 "wardsplaced" : int(participant['wardsPlaced']),
                 "win" : participant['win']
             }
-
-            api_url=URL['matchparticipants'].format(url='/')
-            self.request_post(api_url, body)
+            response = self.get_matchparticipant_by_matchid_and_puuid(match['metadata']['matchId'], participant['puuid'])
+            if (len(response) == 0) :
+                api_url=URL['matchparticipants'].format(url='/')
+                self.request_post(api_url, body)
+            else :
+                api_url=URL['matchparticipants'].format(url='/'+str(response[0]['id']))
+                self.request_update(api_url, body)
         return True
 
     def post_league(self, leagues) :
