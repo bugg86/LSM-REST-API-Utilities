@@ -40,7 +40,7 @@ class RESTAPI :
         for key, value in params.items() :
             if key not in args :
                 args[key] = value
-        response = requests.update(
+        response = requests.put(
             URL['base'].format(
                 url=api_url
             ),
