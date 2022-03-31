@@ -1,4 +1,4 @@
-from consts import URL
+from .consts import URL
 from riotapiutilities.api import RiotApi
 from riotapiutilities.consts import REGIONS
 
