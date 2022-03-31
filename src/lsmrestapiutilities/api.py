@@ -1,4 +1,4 @@
-from .consts import URL
+from consts import URL
 from riotapiutilities.api import RiotApi
 from riotapiutilities.consts import REGIONS
 
@@ -271,7 +271,7 @@ class RESTAPI :
             'summonerlevel' : summoner['summonerLevel']
         }
         api_url = URL['summoners'].format(url='/')
-        return self.request_post(api_url, body)
+        return self.request_update(api_url, body)
 
     def post_match(self, match) :
         body = {
@@ -346,12 +346,9 @@ class RESTAPI :
                 for selection in style['selections'] :
                     runes.append(selection['perk'])
             puuid = participant['puuid']
-            summonerid = participant['summonerId']
-            response = self.get_summoner_by_puuid(puuid)
-            if len(response) == 0 :
-                RIOT_KEY = 'RGAPI-ef3247df-953a-4361-80f7-f3f2c255b5d0'
-                summoner = RiotApi(RIOT_KEY, REGIONS['north_america']).get_summoner_by_puuid(puuid)
-                self.post_summoner(summoner)
+            RIOT_KEY = 'RGAPI-ef3247df-953a-4361-80f7-f3f2c255b5d0'
+            summoner = RiotApi(RIOT_KEY, REGIONS['north_america']).get_summoner_by_puuid(puuid)
+            self.post_summoner(summoner)
             body = {
                 "matchid" : "{matchId}".format(matchId=match['metadata']['matchId']),
                 "summonerid" : "{summonerId}".format(summonerId=participant['summonerId']),
@@ -412,7 +409,7 @@ class RESTAPI :
                 "physicaldamagedealttochampions" : int(participant['physicalDamageDealtToChampions']),
                 "physicaldamagetaken" : int(participant['physicalDamageTaken']),
                 "profileiconid" : int(participant['profileIcon']),
-                "puuid" : str(participant['puuid']),
+                "puuid" : puuid,
                 "quadrakills" : int(participant['quadraKills']),
                 "riotidname" : "{riotIdName}".format(riotIdName=participant['riotIdName']),
                 "riotidtagline" : "{riotIdTagline}".format(riotIdTagline=participant['riotIdTagline']),
@@ -466,7 +463,7 @@ class RESTAPI :
                 "win" : participant['win']
             }
         
-            response = self.get_matchparticipant_by_matchid_and_summonerid(match['metadata']['matchId'], summonerid)
+            response = self.get_matchparticipant_by_matchid_and_puuid(match['metadata']['matchId'], puuid)
             if (len(response) == 0) :
                 api_url=URL['matchparticipants'].format(url='/')
                 self.request_post(api_url, body)
