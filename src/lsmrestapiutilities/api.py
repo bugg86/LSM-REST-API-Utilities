@@ -294,15 +294,23 @@ class RESTAPI :
         for team in match['info']['teams'] :
             teamid = team['teamId']
             response = self.get_matchteam_by_matchid_and_teamid(matchid, teamid)
+            if match['gameMode'] == 'ARAM' :
+                ban1, ban2, ban3, ban4, ban5 = -1, -1, -1, -1, -1
+            else :
+                ban1 = team['bans'][0]['championId']
+                ban2 = team['bans'][1]['championId']
+                ban3 = team['bans'][2]['championId']
+                ban4 = team['bans'][3]['championId']
+                ban5 = team['bans'][4]['championId']
             body = {
                 'matchid' : matchid,
                 'teamid' : teamid,
                 'win' : team['win'],
-                'ban1' : team['bans'][0]['championId'],
-                'ban2' : team['bans'][1]['championId'],
-                'ban3' : team['bans'][2]['championId'],
-                'ban4' : team['bans'][3]['championId'],
-                'ban5' : team['bans'][4]['championId'],
+                'ban1' : ban1,
+                'ban2' : ban2,
+                'ban3' : ban3,
+                'ban4' : ban4,
+                'ban5' : ban5,
                 'firstbaron' : team['objectives']['baron']['first'],
                 'baronkills' : team['objectives']['baron']['kills'],
                 'firstchampion' : team['objectives']['champion']['first'],
