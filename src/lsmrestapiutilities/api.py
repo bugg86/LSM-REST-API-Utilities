@@ -263,16 +263,16 @@ class RESTAPI :
 
     def post_summoner(self, summoner) : 
         body = {
-            'id' : summoner['id'],
-            'accountid' : summoner['accountId'],
-            'puuid' : summoner['puuid'],
-            'name' : summoner['name'],
-            'profileiconid' : summoner['profileIconId'],
-            'revisiondate' : summoner['revisionDate'],
-            'summonerlevel' : summoner['summonerLevel']
+            "id" : summoner['id'],
+            "accountid" : summoner['accountId'],
+            "puuid" : summoner['puuid'],
+            "name" : summoner['name'],
+            "profileiconid" : summoner['profileIconId'],
+            "revisiondate" : summoner['revisionDate'],
+            "summonerlevel" : summoner['summonerLevel']
         }
         api_url = URL['summoners'].format(url='/')
-        return self.request_update(api_url, json.dumps(body))
+        return self.request_update(api_url, body)
 
     def post_match(self, match) :
         body = {
