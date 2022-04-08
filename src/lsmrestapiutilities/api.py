@@ -296,7 +296,7 @@ class RESTAPI :
         for team in match['info']['teams'] :
             teamid = team['teamId']
             response = self.get_matchteam_by_matchid_and_teamid(matchid, teamid)
-            if match['info']['gameMode'] == 'ARAM' :
+            if match['info']['gameMode'] == 'ARAM' or match['info']['gameType'] == 'CUSTOM_GAME' or len(team['bans']) == 0:
                 ban1, ban2, ban3, ban4, ban5 = -1, -1, -1, -1, -1
             else :
                 ban1 = team['bans'][0]['championId']
@@ -421,7 +421,7 @@ class RESTAPI :
 
     def post_league(self, leagues) :
         for league in leagues :
-            if league['queueType'] == 'RANKED_TFT_PAIRS' :
+            if league['queueType'] == 'RANKED_TFT_PAIRS':
                 pass
             else :
                 body = {
