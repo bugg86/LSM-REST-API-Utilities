@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='lsmrestapiutilities',
-    version='1.2.5',
+    version='1.2.6',
     license='MIT',
     author="Jack Fink",
     author_email='jackfink68@yahoo.com',
@@ -13,7 +13,8 @@ setup(
     keywords='lsm rest api utilities',
     install_requires=[
           'requests',
-          'riotapiutilities'
+          'riotapiutilities',
+          'json'
       ],
 
 )
