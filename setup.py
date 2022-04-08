@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='lsmrestapiutilities',
-    version='1.2.2',
+    version='1.2.3',
     license='MIT',
     author="Jack Fink",
     author_email='jackfink68@yahoo.com',
