@@ -3,7 +3,6 @@ from riotapiutilities.api import RiotApi
 from riotapiutilities.consts import REGIONS
 
 import requests
-import json
 
 class RESTAPI :
     def __init__(self, api_key) :
@@ -271,8 +270,14 @@ class RESTAPI :
             "revisiondate" : summoner['revisionDate'],
             "summonerlevel" : summoner['summonerLevel']
         }
-        api_url = URL['summoners'].format(url='/')
-        return self.request_update(api_url, body)
+        response = self.get_summoner_by_id(summoner['id'])
+        if len(response) == 0 :
+            api_url = URL['summoners'].format(url='/')
+            self.request_post(api_url, body)
+        else :
+            api_url = URL['summoners'].format(url='/{id}'.format(id=body['id']))
+            self.request_update(api_url, body)
+        return True
 
     def post_match(self, match) :
         body = {
