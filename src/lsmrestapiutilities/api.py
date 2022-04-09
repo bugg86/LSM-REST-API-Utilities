@@ -145,6 +145,10 @@ class RESTAPI :
     def get_championmastery_by_championid(self, championid) :
         api_url = URL['championmasteries'].format(url='?championid={id}'.format(id=championid))
         return self.request_get(api_url)
+    
+    def get_championmastery_by_championid_and_summonerid(self, championid, summonerid) :
+        api_url = URL['championmasteries'].format(url='?championid={id}&summonerid={summonerid}'.format(id=championid, summonerid=summonerid))
+        return self.request_get(api_url)
 
 
 
