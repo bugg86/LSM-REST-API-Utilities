@@ -357,8 +357,9 @@ class RESTAPI :
                     runes.append(selection['perk'])
             puuid = participant['puuid']
             RIOT_KEY = 'RGAPI-ef3247df-953a-4361-80f7-f3f2c255b5d0'
-            summoner = RiotApi(RIOT_KEY, REGIONS['north_america']).get_summoner_by_puuid(puuid)
-            self.post_summoner(summoner)
+            r_api = RiotApi(RIOT_KEY, REGIONS['north_america'])
+            self.post_summoner(r_api.get_summoner_by_puuid(puuid))
+                
             body = {
                 "matchid" : "{matchId}".format(matchId=match['metadata']['matchId']),
                 "summonerid" : "{summonerId}".format(summonerId=participant['summonerId']),
@@ -419,6 +420,23 @@ class RESTAPI :
                 "truedamagedealttochampions" : int(participant['trueDamageDealtToChampions']),
                 "win" : participant['win']
             }
+
+            summoner = r_api.get_summoner_by_puuid(puuid)
+            leagues = self.get_league_by_summonerid(summoner['id'])
+            if len(leagues) == 0 or leagues == [] :
+                api_url=URL['leagues'].format(url='/')
+                league = r_api.get_league_by_summoner_id(summoner['id'])
+                
+                print(league)
+                self.post_league(league)
+
+            championMastery = self.get_championmastery_by_championid_and_summonerid(body['championid'], summoner['id'])
+            print(championMastery)
+            if len(championMastery) == 0 :
+                api_url=URL['championmasteries'].format(url='/')
+                championMastery = r_api.get_champ_mastery_by_summoner_id_and_champ_id(summoner['id'], participant['championId'])
+                print(championMastery)
+                self.post_championMastery(championMastery)
         
             response = self.get_matchparticipant_by_matchid_and_puuid(match['metadata']['matchId'], puuid)
             if (len(response) == 0) :
@@ -427,6 +445,7 @@ class RESTAPI :
             else :
                 api_url=URL['matchparticipants'].format(url='/'+str(response[0]['id']))
                 self.request_update(api_url, body)
+            
         return True
 
     def post_league(self, leagues) :
