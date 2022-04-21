@@ -62,6 +62,13 @@ class RESTAPI :
 
 
 
+    def get_champion_name_by_id(self, champion_id) :
+        api_url = URL['champions'].format(url='?championid={id}'.format(id=champion_id))
+        response = self.request_get(api_url)
+        return response[0]['name']
+
+
+
     def get_summoner_by_name(self, summoner_name) :
         api_url = URL['summoners'].format(url='?name={name}'.format(name=summoner_name))
         return self.request_get(api_url)
@@ -265,6 +272,7 @@ class RESTAPI :
     
 
     def post_summoner(self, summoner) : 
+        print(summoner)
         body = {
             "id" : summoner['id'],
             "accountid" : summoner['accountId'],
@@ -421,20 +429,19 @@ class RESTAPI :
                 "win" : participant['win']
             }
 
-            summoner = r_api.get_summoner_by_puuid(puuid)
-            leagues = self.get_league_by_summonerid(summoner['id'])
+            leagues = self.get_league_by_summonerid(body['summonerid'])
             if len(leagues) == 0 or leagues == [] :
                 api_url=URL['leagues'].format(url='/')
-                league = r_api.get_league_by_summoner_id(summoner['id'])
+                league = r_api.get_league_by_summoner_id(body['summonerid'])
                 
                 print(league)
                 self.post_league(league)
 
-            championMastery = self.get_championmastery_by_championid_and_summonerid(body['championid'], summoner['id'])
+            championMastery = self.get_championmastery_by_championid_and_summonerid(body['championid'], body['summonerid'])
             print(championMastery)
             if len(championMastery) == 0 :
                 api_url=URL['championmasteries'].format(url='/')
-                championMastery = r_api.get_champ_mastery_by_summoner_id_and_champ_id(summoner['id'], participant['championId'])
+                championMastery = r_api.get_champ_mastery_by_summoner_id_and_champ_id(body['summonerid'], participant['championId'])
                 print(championMastery)
                 self.post_championMastery(championMastery)
         
